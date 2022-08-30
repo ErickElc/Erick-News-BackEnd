@@ -8,8 +8,8 @@ const app = express();
 routes(app)
 
 
-app.listen(process.env.PORT, ()=>{
-    console.log(`Servidor rodando na porta ${process.env.PORT}`);
+app.listen(PORT, ()=>{
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
 
 db.on("error",console.error.bind("Houver um erro ao conectar o banco de dados"));
