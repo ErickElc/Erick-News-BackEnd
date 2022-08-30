@@ -14,6 +14,9 @@ const routes = app =>{
         cors(),
         router
     )
+    app.use('/', (req, res)=>{
+        res.send('Bem Vindo')
+    })
 }
 
 module.exports = routes;
