@@ -2,10 +2,14 @@ const postModel = require("../model/Posts.js");
 
 class PostController{
 
-    static listarPosts(req, res) {
-        postModel.find((err, posts)=>{
-            (!err) ? res.status(200).json(posts) : res.status(404).send(`${err.message} houve um erro`);
-        })
+    static async listarPosts(req, res) {
+        try {
+            const postsAll =  await postModel.find();
+            res.status(200).send(postsAll);
+        } 
+        catch (error) {
+            res.status(404).send(`${err.message} houve um erro`);
+        }
     }
     static async listarUmPost(req, res) {
         const id = req.params.id;
