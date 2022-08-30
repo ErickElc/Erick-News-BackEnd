@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router
-    .get('/', PostController.listarPosts)
+    .get('/all', PostController.listarPosts)
     .get('/:id', PostController.listarUmPost)
     .post('/new', PostController.cadastrarPost)
     .put('/edit/:id', PostController.editarPost)
