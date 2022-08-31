@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const router = require("./post.routes.js");
+const routerComments = require("./comment.routes.js");
 
 
 
@@ -12,7 +13,8 @@ const routes = app =>{
         express.urlencoded({ extended: false }),
         express.json(),
         cors(),
-        router
+        router,
+        routerComments
     )
     app.use('/', (req, res)=>{
         res.send('Bem Vindo')

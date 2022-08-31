@@ -1,14 +1,15 @@
+const commentModel = require("../model/Comments.js");
 const postModel = require("../model/Posts.js");
 
 class PostController{
 
     static async listarPosts(req, res) {
         try {
-            const postsAll =  await postModel.find();
+            const postsAll = await postModel.find().populate('comments').exec();
             res.status(200).send(postsAll);
         } 
         catch (error) {
-            res.status(404).send(`${err.message} houve um erro`);
+            res.status(404).send(`${error} houve um erro`);
         }
     }
     static async listarUmPost(req, res) {
