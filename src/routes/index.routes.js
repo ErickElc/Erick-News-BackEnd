@@ -1,10 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const router = require("./post.routes.js");
+const routerPost = require("./post.routes.js");
 const routerComments = require("./comment.routes.js");
-
-
-
+const routerAuth = require("./auth.routes.js");
+const routerUser = require("./user.routes.js");
 
 
 const routes = app =>{
@@ -12,12 +11,18 @@ const routes = app =>{
         "/api",
         express.urlencoded({ extended: false }),
         express.json(),
-        cors(),
-        router,
+        routerUser,
+        routerPost,
         routerComments
+        ),
+    app.use(
+        '/auth',
+        express.urlencoded({ extended: false }),
+        express.json(),
+        routerAuth
     )
     app.use('/', (req, res)=>{
-        res.send('Bem Vindo')
+        res.status(200).send('Bem Vindo')
     })
 }
 

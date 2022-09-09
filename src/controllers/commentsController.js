@@ -1,6 +1,6 @@
 const commentModel = require('../model/Comments.js');
+const jwt = require('jsonwebtoken')
 class commentsController{
-
     static async listComments(req,res){
         try {
             const comments = await commentModel.find();
@@ -29,6 +29,5 @@ class commentsController{
             res.status(500).send(`Não foi possível excluir esse comentário${error}`)
         }
     }
-
 }
 module.exports = commentsController;

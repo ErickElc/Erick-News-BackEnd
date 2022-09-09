@@ -1,11 +1,15 @@
+require('dotenv').config()
 const express = require("express");
 const routes = require("./src/routes/index.routes");
 const db = require("./src/config/db.js");
-const PORT = process.env.PORT || 8877;
+const cors = require('cors');
+
 const app = express();
 
-routes(app);
+const PORT = process.env.PORT || 8877;
 
+app.use(cors());
+routes(app);
 app.listen(PORT, ()=>{
     console.log(`Servidor rodando na porta ${PORT}`);
 });
