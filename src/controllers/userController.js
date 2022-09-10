@@ -45,6 +45,7 @@ class userController{
                 _id: userSelected._id,
                 name: userSelected.name,
                 age: userSelected.age,
+                email: userSelected.email,
                 admin: userSelected.admin,
                 createdDate: userSelected.createdDate
             }

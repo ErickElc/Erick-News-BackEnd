@@ -1,10 +1,10 @@
 const postModel = require("../model/Posts.js");
 const userModel = require("../model/User.js");
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 class PostController{
     static async listarPosts(req, res) {
         try {
-            const postsAll = await postModel.find().populate('autor').exec();
+            const postsAll = await postModel.find().populate({path: 'autor', select:'name _id email admin'}).exec();
             res.status(200).send(postsAll);
         } 
         catch (error) {
@@ -61,7 +61,6 @@ class PostController{
         const id = req.params.id;
         try {
             const findPost = await postModel.findOne({_id: id});
-            const findAutor = await userModel.findOne({email: req.body.email})
             const authorization = jwt.verify(req.body.token, process.env.SECRET_TOKEN);
             if(authorization._id != findPost.autor._id) return res.status(403).send('Não foi possível deletar esse documento');
             await postModel.findByIdAndRemove(id)
