@@ -1,6 +1,7 @@
 const userModel =  require('../model/User');
 const bycrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { find } = require('../model/User');
 const saltKey = bycrypt.genSaltSync(10);
 
 class userController{
@@ -25,11 +26,8 @@ class userController{
     static async loginUser(req, res){
         const userSelected = await userModel.findOne({email: req.body.email});
         if(!userSelected) return res.status(400).send('Email or password incorrect');
-        
         const passwordMatch = bycrypt.compareSync(req.body.password, userSelected.password);
-        
         if(!passwordMatch) return res.status(400).send('E-mail or password incorrect');
-
         const token = jwt.sign({_id: userSelected.id}, process.env.SECRET_TOKEN,{
             expiresIn: "12h"
         });
@@ -53,6 +51,27 @@ class userController{
         } 
         catch (error) {
             res.status(400).send('Não foi possível pegar os dados do usuário! ' + error);
+        }
+    }
+    static async listUsers (req, res) {
+        try {
+            const users = await userModel.find()
+            res.status(200).send(users)
+        } catch (error) {
+            res.status(500).send(error);          
+        }
+    }
+    static async deleteUsers (req, res){
+        try {
+            const authorFind = await userModel.findOne({email: req.body.email});
+            const authorization = jwt.verify(req.body.token, process.env.SECRET_TOKEN);
+            console.log(authorFind.admin !== true)
+            if(authorization) return res.status(400).send("Não foi possível pegar os dados do usuário");
+            if((authorFind.admin != true) == false)return res.status(403).send("Não foi possível pegar os dados do usuário");
+            await userModel.findOneAndDelete({_id: req.body._id});
+
+        } catch (error) {
+            
         }
     }
 }
