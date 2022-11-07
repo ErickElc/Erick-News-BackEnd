@@ -1,7 +1,6 @@
 const userModel =  require('../model/User');
 const bycrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
-const { find } = require('../model/User');
 const saltKey = bycrypt.genSaltSync(10);
 
 class userController{
@@ -38,7 +37,7 @@ class userController{
         try {
             const userSelected = await userModel.findOne({email: req.body.email});
             const authorization = jwt.verify(req.body.token, process.env.SECRET_TOKEN);
-            if(authorization.status === 403) return res.status(400).send("Não foi possível pegar os dados do usuário");
+            if(!authorization) return res.status(403).send("Não foi possível pegar os dados do usuário");
             const userData = {
                 _id: userSelected._id,
                 name: userSelected.name,
@@ -50,7 +49,7 @@ class userController{
             res.status(200).send(userData);
         } 
         catch (error) {
-            res.status(400).send('Não foi possível pegar os dados do usuário! ' + error);
+            res.status(500).send('Não foi possível pegar os dados do usuário! ' + error);
         }
     }
     static async listUsers (req, res) {
@@ -64,14 +63,11 @@ class userController{
     static async deleteUsers (req, res){
         try {
             const authorFind = await userModel.findOne({email: req.body.email});
-            const authorization = jwt.verify(req.body.token, process.env.SECRET_TOKEN);
-            console.log(authorFind.admin !== true)
-            if(authorization) return res.status(400).send("Não foi possível pegar os dados do usuário");
-            if((authorFind.admin != true) == false)return res.status(403).send("Não foi possível pegar os dados do usuário");
-            await userModel.findOneAndDelete({_id: req.body._id});
-
+            if(!authorFind) res.status(404).send('Não foi possível executar está função!');
+            await userModel.findOneAndDelete({email: req.body.email});
+            res.status(201).send('Usuário deletado com sucesso!')
         } catch (error) {
-            
+            res.status(500).send(error);
         }
     }
 }
