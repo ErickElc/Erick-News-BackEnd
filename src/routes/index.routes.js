@@ -20,9 +20,6 @@ const routes = (app) => {
       express.json(),
       routerAuth
     );
-  app.use("/", (req, res) => {
-    res.status(200).send("Bem Vindo");
-  });
 };
 
 module.exports = routes;
