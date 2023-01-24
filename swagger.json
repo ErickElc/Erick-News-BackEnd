@@ -1,0 +1,49 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Erick-News",
+    "description": "Documentation from erick-news api",
+    "version": "1.0.0"
+  },
+  "schemes": ["http"],
+  "basePath": "/",
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/api/users/all": {
+      "summary": "Busca de um produto pelo nome",
+      "description": "Rota que busca produto pelo nome",
+      "get": {
+        "tags": ["usuarios"],
+        "parameters": {
+          "in": "query",
+          "name": "name",
+          "type": "string"
+        },
+        "responses": {
+          "200": {
+            "description": "A user object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 4
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Jessica Smith"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
